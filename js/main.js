@@ -189,7 +189,8 @@ $(document).ready(function(){
 
 // check questions
 
-var total_points = [0, 0, 0, 0, 0, 0];
+var total_points_p = [0, 0, 0, 0, 0, 0];
+var total_points_n = [0, 0, 0, 0, 0, 0];
 for(var i=0;i<questions.length;i++){
 	var q = questions[i];
 
@@ -197,8 +198,17 @@ for(var i=0;i<questions.length;i++){
 
 	for(var ans=0;ans<q.matrix.length;ans++){
 		console.log(q.matrix[ans].length);
-		total_points = total_points.map((p, index) => p+q.matrix[ans][index+1]);
+		
+		total_points_p = total_points_p.map(function(p, index){
+			var v = q.matrix[ans][index+1];
+			return p + (v > 0 ? v : 0)
+		});
+		total_points_n = total_points_n.map(function(p, index){
+			var v = q.matrix[ans][index+1];
+			return p + (v < 0 ? v : 0)
+		});
+
 	}
 	
 }
-console.log(total_points);
+console.log(total_points_p, total_points_n);
