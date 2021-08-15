@@ -49,7 +49,6 @@ var questions = [
 		["Bäst", 1, 0, 0, 0, 0, 0],
 		["Bästigast", 1.5, 0, 0, 0, 0, 0]),
 
-	
 	new Question("Vad är bäst?", 
 		["GANT", 1, 0, 0, 0, 0, 0], 
 		["GUCCI", 1, 0, 0, 0, 0, 0],
