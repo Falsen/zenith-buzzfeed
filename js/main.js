@@ -29,6 +29,15 @@ var attributes = [
 	"regal?"
 ];
 
+var resultimages = [
+	"img/kycklingbacon.png",
+	"img/cake.jpg",
+	"img/cake.jpg",
+	"img/cake.jpg",
+	"img/cake.jpg",
+	"img/cake.jpg"
+];
+
 function Question(title){
 	this.title = title;
 	var args = [].slice.call(arguments);
@@ -39,15 +48,22 @@ function Question(title){
 // question point matrix
 var questions = [
 	new Question("Är du en köttätare", 
-		["NEJ", 0, 0, 1, 0, 0, 0], 
-		["JA", 0, 0, -1, 0, 0, 0], 
+		["NEJ", 0, 0, 2, 0, 0, 0], 
+		["JA", 0, 0, -2, 0, 0, 0], 
 		["IBLAND", 0, 1, 0, 0, 0, 0]),
 
 	new Question("Hur bäst är du?", 
-		["Lagom", 0, 0, 0, 1, 0, 0], 
+		["Lagom", 0, 0, 0, 1, 1, 0], 
 		["Bra", 0.5, 0, 0, 0, 0, 0],
 		["Bäst", 1, 0, 0, 0, 0, 0],
 		["Bästigast", 1.5, 0, 0, 0, 0, 0]),
+
+	new Question("när jag var 15 åkte jag...", 
+		["Moped", 0, 0, 0, 1, 0, 0], 
+		["Epa", 1, 0, 0, 0, 0, 0],
+		["Mopedbil", 1, 0, 0, 0, 0, 0],
+		["Häst", 0, 0, 1, 0, 0, 0],
+		["Mamma skutsa", 0, 0, 0, 1, 1, 0]),
 
 	new Question("Vad är bäst?", 
 		["GANT", 1, 0, 0, 0, 0, 0], 
@@ -55,10 +71,39 @@ var questions = [
 		["Ralph Lauren", 1, 0, 0, 0, 0, 0],
 		["Usch", 0, 0, 0, 0, 0, 0]),
 
+	new Question("Skaldjur äts bäst", 
+		["på sture plan", 2, 0, 0, 0, 0, 0], 
+		["(räkor) äts på smörgåstårta, självklart", 0, 3, 0, 0, 0, 0], 
+		["äts ej! skaldjursallergiker!!!", 0, -3, 0, 0, 0, 0],
+		["äts ej", 1, 0, 2, 1, 1, 1]),
+
+	new Question("Är du förknippad med Danmark?", 
+		["Ja", 0, 1, 0, 0, 0, 0], 
+		["Nej", 0, -1, 0, 0, 0, 0],
+		["Ibland", 0, 0, 0, 0, 0, 0],
+		["Absolut inte", 0, -2, 0, 0, 0, 0]),
+
+	new Question("politik är", 
+		["något för nördar", 1, 0, 0, 0, 0, 0], 
+		["tråkigt", 0, 0, 0, 0, 0, 0],
+		["Jag vill bli Steffe 2.0", 0, 0, 1, 1, 1, 0]),
+
+	new Question("Vilket citat är bäst?", 
+		["Life is like a box of chocolates. You never know what you're gonna get.", 0, 2, 0, 0, 2, 0], 
+		["May the Force be with you", 0, 0, 0, 0, 2, 0],
+		["Life is soup. I am fork", -1, -1, 0, 0, 0, 0],
+		["Live Love Life", 0, -1, 1, 0, 0, 0]),
+
 	new Question("Måndag lunch, du har glömt matlådan", 
-		["Jag glömmer ej matlåda", 0, 1, 1, 0, 0, 0], 
-		["Kyckling och bacon", 1, 0, 0, 0, 0, 0],
+		["Jag glömmer ej matlåda", 0, 2, 1, 0, 0, 0], 
+		["Kyckling och bacon", 2, 0, 0, 0, 0, 0],
 		["Smörgåstårta", 0, 0, 0, 0, 0, 0]),
+
+	new Question("Hur ofta hävfer du?", 
+		["Aldrig hänt", 0, 0, 0, 1, 2, 0], 
+		["Varje helg", 1, 0, 0, 0, 0, 0],
+		["Vadå häfva?", 0, 0, 0, 1, 2, 0]),
+
 ];
 
 var current_question = 0;
@@ -114,19 +159,46 @@ function showResult(){
 
 	var bestMatch = -1;
 
+	// determine which cake won
 	for(var i=0;i<points.length;i++){
 		var pts = points[i];
 		if(bestMatch == -1 || pts >= points[bestMatch]){
 			bestMatch = i;
 		}
 	}
+	// bestMatch = the winning cake
 
+	// pick a beautiful random name
 	var randomName = names[Math.floor(Math.random() * names.length)];
 
 	$("#result_matched").html(attributes[bestMatch] + "' " + randomName);
 	$("#result_attributes").html(cakes[bestMatch]);
+
+	$("#result_image").attr("src", resultimages[bestMatch]);
 }
 
 $(document).ready(function(){
-	showQ();
+	
+	$("#start_btn").click(function(){
+		$("#question_box").show();
+		$("#intro_box").hide();
+
+		showQ();
+	})
 });
+
+// check questions
+
+var total_points = [0, 0, 0, 0, 0, 0];
+for(var i=0;i<questions.length;i++){
+	var q = questions[i];
+
+	
+
+	for(var ans=0;ans<q.matrix.length;ans++){
+		console.log(q.matrix[ans].length);
+		total_points = total_points.map((p, index) => p+q.matrix[ans][index+1]);
+	}
+	
+}
+console.log(total_points);
