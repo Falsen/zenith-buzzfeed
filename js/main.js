@@ -48,7 +48,7 @@ function Question(title){
 // question point matrix
 var questions = [
 	new Question("Är du en köttätare", 
-		["NEJ", 0, 0, 2, 0, 0, 0], 
+		["NEJ", -2, -1, 2, -2, -2, -2], 
 		["JA", 0, 0, -2, 0, 0, 0], 
 		["IBLAND", 0, 1, 0, 0, 0, 0]),
 
@@ -119,7 +119,7 @@ function showQ(){
 	var matrix = question.matrix;
 	$("#boxes").empty();
 	for(var i=0;i<matrix.length;i++){
-		$("#boxes").append('<div class="box">' + matrix[i][0] + '</div>');
+		$("#boxes").append('<div class="box d-flex align-items-center"><div class="container">' + matrix[i][0] + '</div></div>');
 	}
 
 	$(".box").click(function(){
@@ -134,9 +134,9 @@ function showQ(){
 
 		$(".box").not($(this)).animate({opacity: 0}, function(){
 
-			nextQ();
-
-			$(this).delay(400).animate({opacity: 1});
+			$(this).delay(900, function(){
+				nextQ();
+			})
 		});
 	})
 }
@@ -156,6 +156,8 @@ function nextQ(){
 function showResult(){
 	$("#question_box").hide();
 	$("#result_box").show();
+
+	document.body.style.overflow = '';
 
 	var bestMatch = -1;
 
@@ -184,6 +186,7 @@ $(document).ready(function(){
 		$("#intro_box").hide();
 
 		showQ();
+		document.body.style.overflow = 'hidden';
 	})
 });
 
