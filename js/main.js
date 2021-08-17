@@ -122,6 +122,8 @@ function showQ(){
 		$("#boxes").append('<div class="box d-flex align-items-center"><div class="container">' + matrix[i][0] + '</div></div>');
 	}
 
+	var time = new Date().getTime();
+
 	$(".box").click(function(){
 		var index = $(this).index();
 
@@ -138,6 +140,17 @@ function showQ(){
 				nextQ();
 			})
 		});
+
+		var took = (new Date().getTime() - time)/1000;
+
+		gtag("event", "submit_question", {
+			question_id: current_question-1,
+			question: question,
+			answer: $(this).html(),
+			time: took
+		});
+
+		
 	})
 }
 
@@ -177,6 +190,12 @@ function showResult(){
 	$("#result_attributes").html(cakes[bestMatch]);
 
 	$("#result_image").attr("src", resultimages[bestMatch]);
+
+	gtag("event", "finish_quiz", {
+		attribute: attributes[bestMatch],
+		name: randomName,
+		cake: cakes[bestMatch]
+	});
 }
 
 $(document).ready(function(){
@@ -187,6 +206,7 @@ $(document).ready(function(){
 
 		showQ();
 		document.body.style.overflow = 'hidden';
+		gtag("event", "start_quiz");
 	})
 });
 
