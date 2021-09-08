@@ -115,7 +115,7 @@ var questions = [
 		["Vadå häfva?", 0, 0, 0, 1, 2]),
 ];
 
-var current_question = 10;
+var current_question = 0;
 
 // show question based on "current_question"
 function showQ(){
