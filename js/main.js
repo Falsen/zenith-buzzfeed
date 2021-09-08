@@ -26,9 +26,9 @@ var cakes = [
 
 // indexed attributes
 var attributes = [
-	"pesto",
-	"självständig",
-	"bra matlådor",
+	"testo",
+	"självständiga",
+	"bra-matlåds",
 	"(s)kinkinga",
 	"strumpor-och-sandaler"
 ];
@@ -39,7 +39,7 @@ var resultimages = [
 	"img/havetsfrukter.png",
 	"img/vego.png",
 	"img/glutenklubben.png",
-	"img/cake.jpg"
+	"img/leverpastej.png"
 ];
 
 // object for holding questions
@@ -115,7 +115,7 @@ var questions = [
 		["Vadå häfva?", 0, 0, 0, 1, 2]),
 ];
 
-var current_question = 0;
+var current_question = 10;
 
 // show question based on "current_question"
 function showQ(){
@@ -139,7 +139,6 @@ function showQ(){
 				})
 				.join(" ");
 		}
-		console.log(text);
 		$("#boxes").append('<div class="box d-flex align-items-center"><div class="container">' + text + '</div></div>');
 	}
 
