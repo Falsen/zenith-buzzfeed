@@ -9,7 +9,7 @@ var names = [
 	"alberte", "margerete", "yvonne"
 ];
 
-var points = [0, 0, 0, 0, 0, 0];
+var points = [0, 0, 0, 0, 0];
 
 var cakes = [
 	"Kyckling och bacon", // 0
@@ -17,7 +17,6 @@ var cakes = [
 	"Vegetarisk", // 2
 	"Ost och skinka glutenfri", // 3
 	"Ost och skinka + leverpastej", // 4
-	"Regalskeppet"
 ];
 
 var attributes = [
@@ -25,13 +24,11 @@ var attributes = [
 	"självständig",
 	"bra matlådor",
 	"(s)kinking",
-	"strumpor och sandalorer",
-	"regal?"
+	"strumpor och sandalorer"
 ];
 
 var resultimages = [
 	"img/kycklingbacon.png",
-	"img/cake.jpg",
 	"img/cake.jpg",
 	"img/cake.jpg",
 	"img/cake.jpg",
@@ -48,61 +45,61 @@ function Question(title){
 // question point matrix
 var questions = [
 	new Question("Är du en köttätare", 
-		["NEJ", -2, -1, 2, -2, -2, -2], 
-		["JA", 0, 0, -2, 0, 0, 0], 
-		["IBLAND", 0, 1, 0, 0, 0, 0]),
+		["NEJ", -2, -1, 3, -2, -2], 
+		["JA", 0, 0, -2, 0, 0], 
+		["IBLAND", 0, 1, 0, 0, 0]),
 
 	new Question("Hur bäst är du?", 
-		["Lagom", 0, 0, 0, 1, 1, 0], 
-		["Bra", 0.5, 0, 0, 0, 0, 0],
-		["Bäst", 1, 0, 0, 0, 0, 0],
-		["Bästigast", 1.5, 0, 0, 0, 0, 0]),
+		["Lagom", 0, 0, 0, 2, 2], 
+		["Bra", 0.5, 0, 0, 1, 1],
+		["Bäst", 1, 0, 0, 0, 0],
+		["Bästigast", 1.5, 0, 0, 0, 0]),
 
 	new Question("när jag var 15 åkte jag...", 
-		["Moped", 0, 0, 0, 1, 0, 0], 
-		["Epa", 1, 0, 0, 0, 0, 0],
-		["Mopedbil", 1, 0, 0, 0, 0, 0],
-		["Häst", 0, 0, 1, 0, 0, 0],
-		["Mamma skutsa", 0, 0, 0, 1, 1, 0]),
+		["Moped", 0, 0, 0, 1, 0], 
+		["Epa", 1, 0, 0, 0, 0],
+		["Mopedbil", 1, 0, 0, 0, 0],
+		["Häst", 0, 0, 1, 0, 0],
+		["Mamma skutsa", 0, 0, 0, 1, 1]),
 
 	new Question("Vad är bäst?", 
-		["GANT", 1, 0, 0, 0, 0, 0], 
-		["GUCCI", 1, 0, 0, 0, 0, 0],
-		["Ralph Lauren", 1, 0, 0, 0, 0, 0],
-		["Usch", 0, 0, 0, 0, 0, 0]),
+		["GANT", 1, 0, 0, 0, 0], 
+		["GUCCI", 1, 0, 0, 0, 0],
+		["Ralph Lauren", 1, 0, 0, 0, 0],
+		["Usch", 0, 0, 0, 0, 0]),
 
 	new Question("Skaldjur äts bäst", 
-		["på sture plan", 2, 0, 0, 0, 0, 0], 
-		["(räkor) äts på smörgåstårta, självklart", 0, 3, 0, 0, 0, 0], 
-		["äts ej! skaldjursallergiker!!!", 0, -3, 0, 0, 0, 0],
-		["äts ej", 1, 0, 2, 1, 1, 1]),
+		["på sture plan", 2, 0, 0, 0, 0], 
+		["som räkmacka!", 0, 3, 0, 0, 0], 
+		["äts ej! skaldjursallergiker!!!", 0, -3, 0, 0, 0],
+		["äts ej", 1, 0, 2, 1, 1]),
 
 	new Question("Är du förknippad med Danmark?", 
-		["Ja", 0, 1, 0, 0, 0, 0], 
-		["Nej", 0, -1, 0, 0, 0, 0],
-		["Ibland", 0, 0, 0, 0, 0, 0],
-		["Absolut inte", 0, -2, 0, 0, 0, 0]),
+		["Ja", 0, 1, 0, 0, 0], 
+		["Nej", 0, -1, 0, 0, 0],
+		["Ibland", 0, 0, 0, 0, 0],
+		["Absolut inte", 0, -2, 0, 0, 0]),
 
 	new Question("politik är", 
-		["något för nördar", 1, 0, 0, 0, 0, 0], 
-		["tråkigt", 0, 0, 0, 0, 0, 0],
-		["Jag vill bli Steffe 2.0", 0, 0, 1, 1, 1, 0]),
+		["något för nördar", 1, 0, 0, 0, 0], 
+		["tråkigt", 0, 0, 0, 0, 0],
+		["Jag vill bli Steffe 2.0", 0, 0, 1, 1, 1]),
 
 	new Question("Vilket citat är bäst?", 
-		["Life is like a box of chocolates. You never know what you're gonna get.", 0, 2, 0, 0, 2, 0], 
-		["May the Force be with you", 0, 0, 0, 0, 2, 0],
-		["Life is soup. I am fork", -1, -1, 0, 0, 0, 0],
-		["Live Love Life", 0, -1, 1, 0, 0, 0]),
+		["Life is like a box of chocolates. You never know what you're gonna get.", 0, 2, 0, 0, 2], 
+		["May the Force be with you", 0, 0, 0, 0, 2],
+		["Life is soup. I am fork", -1, -1, 0, 0, 0],
+		["Live Love Life", 0, -1, 1, 0, 0]),
 
 	new Question("Måndag lunch, du har glömt matlådan", 
-		["Jag glömmer ej matlåda", 0, 2, 1, 0, 0, 0], 
-		["Kyckling och bacon", 2, 0, 0, 0, 0, 0],
-		["Smörgåstårta", 0, 0, 0, 0, 0, 0]),
+		["Jag glömmer ej matlåda", 0, 2, 1, 0, 0], 
+		["Baguette med kycklingröra", 2, 0, 0, 0, 0],
+		["Smörgåstårta", 0, 0, 0, 0, 0]),
 
 	new Question("Hur ofta hävfer du?", 
-		["Aldrig hänt", 0, 0, 0, 1, 2, 0], 
-		["Varje helg", 1, 0, 0, 0, 0, 0],
-		["Vadå häfva?", 0, 0, 0, 1, 2, 0]),
+		["Aldrig hänt", 0, 0, 0, 1, 2], 
+		["Varje helg", 1, 0, 0, 0, 0],
+		["Vadå häfva?", 0, 0, 0, 1, 2]),
 
 ];
 
@@ -122,8 +119,10 @@ function showQ(){
 		$("#boxes").append('<div class="box d-flex align-items-center"><div class="container">' + matrix[i][0] + '</div></div>');
 	}
 
+	// time when question was shown
 	var time = new Date().getTime();
 
+	// selects alternative
 	$(".box").click(function(){
 		var index = $(this).index();
 
@@ -143,6 +142,7 @@ function showQ(){
 
 		var took = (new Date().getTime() - time)/1000;
 
+		// anonymous stats
 		gtag("event", "submit_question", {
 			question_id: current_question-1,
 			question: question,
@@ -212,8 +212,8 @@ $(document).ready(function(){
 
 // check questions
 
-var total_points_p = [0, 0, 0, 0, 0, 0];
-var total_points_n = [0, 0, 0, 0, 0, 0];
+var total_points_p = [0, 0, 0, 0, 0];
+var total_points_n = [0, 0, 0, 0, 0];
 for(var i=0;i<questions.length;i++){
 	var q = questions[i];
 
