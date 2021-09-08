@@ -3,6 +3,8 @@
 // made by Vega & Marroozhi :)
 //
 
+var debug = true;
+
 var names = [
 	"bob", "lasse", "anka", "juan", "axel", "albin", "johannes", "kim", "rutger", "sture",
 	"bettan", "denise", "brittgun", "lillemor", "ellen", "hanna", "amanda", "xantippa",
@@ -11,6 +13,9 @@ var names = [
 
 var points = [0, 0, 0, 0, 0];
 
+var short_cakes = [ "K&B", "HF", "V", "OS+GF", "OS+LP"];
+
+// name of all different cakes (indexed)
 var cakes = [
 	"Kyckling och bacon", // 0
 	"Havets frukter", // 1
@@ -19,22 +24,25 @@ var cakes = [
 	"Ost och skinka + leverpastej", // 4
 ];
 
+// indexed attributes
 var attributes = [
 	"pesto",
 	"självständig",
 	"bra matlådor",
-	"(s)kinking",
-	"strumpor och sandalorer"
+	"(s)kinkinga",
+	"strumpor-och-sandaler"
 ];
 
+//result images
 var resultimages = [
 	"img/kycklingbacon.png",
-	"img/cake.jpg",
-	"img/cake.jpg",
-	"img/cake.jpg",
+	"img/havetsfrukter.png",
+	"img/vego.png",
+	"img/glutenklubben.png",
 	"img/cake.jpg"
 ];
 
+// object for holding questions
 function Question(title){
 	this.title = title;
 	var args = [].slice.call(arguments);
@@ -57,8 +65,8 @@ var questions = [
 
 	new Question("när jag var 15 åkte jag...", 
 		["Moped", 0, 0, 0, 1, 0], 
-		["Epa", 1, 0, 0, 0, 0],
-		["Mopedbil", 1, 0, 0, 0, 0],
+		["Epa", 1, 0, -1, 0, 0],
+		["Mopedbil", 1, 1, 0, 0, 0],
 		["Häst", 0, 0, 1, 0, 0],
 		["Mamma skutsa", 0, 0, 0, 1, 1]),
 
@@ -66,18 +74,22 @@ var questions = [
 		["GANT", 1, 0, 0, 0, 0], 
 		["GUCCI", 1, 0, 0, 0, 0],
 		["Ralph Lauren", 1, 0, 0, 0, 0],
-		["Usch", 0, 0, 0, 0, 0]),
+		["Usch", 0, 0, 0.5, 0.5, 0.5]),
+
+	new Question("Är du glutenintolerant?", 
+		["JA", 0, 0, 0, 8, 0],
+		["NAJ", 0, 0, 0, 0, 0]),
 
 	new Question("Skaldjur äts bäst", 
 		["på sture plan", 2, 0, 0, 0, 0], 
 		["som räkmacka!", 0, 3, 0, 0, 0], 
-		["äts ej! skaldjursallergiker!!!", 0, -3, 0, 0, 0],
+		["äts ej! skaldjursallergiker!!!", 0, -5, 0, 0, 0],
 		["äts ej", 1, 0, 2, 1, 1]),
 
 	new Question("Är du förknippad med Danmark?", 
-		["Ja", 0, 1, 0, 0, 0], 
+		["Ja", 0, 1.5, 0, 0, 0], 
 		["Nej", 0, -1, 0, 0, 0],
-		["Ibland", 0, 0, 0, 0, 0],
+		["Ibland", 0, 0.5, 0, 0, 0],
 		["Absolut inte", 0, -2, 0, 0, 0]),
 
 	new Question("politik är", 
@@ -98,9 +110,9 @@ var questions = [
 
 	new Question("Hur ofta hävfer du?", 
 		["Aldrig hänt", 0, 0, 0, 1, 2], 
-		["Varje helg", 1, 0, 0, 0, 0],
+		["Det händer", 0, 0, 0, 0, 0],
+		["Varje helg", 1.5, 0, 0, 0, 0],
 		["Vadå häfva?", 0, 0, 0, 1, 2]),
-
 ];
 
 var current_question = 0;
@@ -116,7 +128,19 @@ function showQ(){
 	var matrix = question.matrix;
 	$("#boxes").empty();
 	for(var i=0;i<matrix.length;i++){
-		$("#boxes").append('<div class="box d-flex align-items-center"><div class="container">' + matrix[i][0] + '</div></div>');
+		var text = matrix[i][0];
+		if(debug && false){
+			text += "<br>" + matrix[i]
+				.splice(1)
+				.map((x, index) => "<span style='color:black;'>"+short_cakes[index] + "</span>: " + x)
+				.filter(function(x, index){
+					console.log(x,index)
+					return true;
+				})
+				.join(" ");
+		}
+		console.log(text);
+		$("#boxes").append('<div class="box d-flex align-items-center"><div class="container">' + text + '</div></div>');
 	}
 
 	// time when question was shown
@@ -186,7 +210,7 @@ function showResult(){
 	// pick a beautiful random name
 	var randomName = names[Math.floor(Math.random() * names.length)];
 
-	$("#result_matched").html(attributes[bestMatch] + "' " + randomName);
+	$("#result_matched").html(attributes[bestMatch] + " " + randomName);
 	$("#result_attributes").html(cakes[bestMatch]);
 
 	$("#result_image").attr("src", resultimages[bestMatch]);
@@ -212,26 +236,32 @@ $(document).ready(function(){
 
 // check questions
 
-var total_points_p = [0, 0, 0, 0, 0];
-var total_points_n = [0, 0, 0, 0, 0];
-for(var i=0;i<questions.length;i++){
-	var q = questions[i];
+if(debug){
 
+	var total_points_p = [0, 0, 0, 0, 0];
+	var total_points_n = [0, 0, 0, 0, 0];
+	for(var i=0;i<questions.length;i++){
+		var q = questions[i];
 	
-
-	for(var ans=0;ans<q.matrix.length;ans++){
-		console.log(q.matrix[ans].length);
 		
-		total_points_p = total_points_p.map(function(p, index){
-			var v = q.matrix[ans][index+1];
-			return p + (v > 0 ? v : 0)
-		});
-		total_points_n = total_points_n.map(function(p, index){
-			var v = q.matrix[ans][index+1];
-			return p + (v < 0 ? v : 0)
-		});
-
-	}
 	
+		for(var ans=0;ans<q.matrix.length;ans++){
+			console.log(q.matrix[ans].length);
+			
+			total_points_p = total_points_p.map(function(p, index){
+				var v = q.matrix[ans][index+1]/(q.matrix.length);
+				return p + (v > 0 ? v : 0)
+			});
+			total_points_n = total_points_n.map(function(p, index){
+				var v = q.matrix[ans][index+1]/(q.matrix.length);
+				return p + (v < 0 ? v : 0)
+			});
+	
+		}
+		
+	}
+	console.log(
+		total_points_p.map(x => Math.round(x*10)/10), 
+		total_points_n.map(x => Math.round(x*10)/10)
+	);
 }
-console.log(total_points_p, total_points_n);
